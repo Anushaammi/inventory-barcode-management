@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>{{ product.name }}</h2>
+  <p>Category: {{ product.category|default:"-" }} | Price: {{ product.price }}</p>
+  <p>In stock: <b {% if product.is_low_stock %}class="low"{% endif %}>
+     {{ product.quantity }}</b> (reorder at {{ product.reorder_level }})</p>
+  {% if product.barcode_image %}
+    <img src="{{ product.barcode_image.url }}" alt="barcode" style="max-width:320px">
+  {% endif %}
+  <p class="noprint">
+    <button class="btn" onclick="window.print()">Print barcode</button>
+    <a class="btn" href="{% url 'product_edit' product.pk %}">Edit</a>
+    <a class="btn" href="{% url 'product_delete' product.pk %}">Delete</a>
+  </p>
+</div>
+<div class="card noprint">
+  <h3>Stock In / Out</h3>
+  <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn">Update stock</button>
+  </form>
+</div>
+<div class="card noprint">
+  <h3>History</h3>
+  <table>
+    <tr><th>Type</th><th>Qty</th><th>Note</th><th>By</th><th>When</th></tr>
+    {% for m in movements %}
+    <tr><td>{{ m.get_movement_type_display }}</td><td>{{ m.quantity }}</td>
+        <td>{{ m.note }}</td><td>{{ m.created_by }}</td>
+        <td>{{ m.created_at|date:"d M H:i" }}</td></tr>
+    {% empty %}<tr><td colspan="5">No history.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

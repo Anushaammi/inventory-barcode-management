@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Products</h2>
+<form method="get" class="noprint">
+  <input name="q" value="{{ q }}" placeholder="Search name or barcode">
+  <button class="btn">Search</button>
+  <a class="btn" href="{% url 'product_add' %}">+ Add product</a>
+</form><br>
+<table>
+  <tr><th>Name</th><th>Category</th><th>Barcode</th><th>Price</th><th>Qty</th></tr>
+  {% for p in products %}
+  <tr>
+    <td><a href="{% url 'product_detail' p.pk %}">{{ p.name }}</a></td>
+    <td>{{ p.category|default:"-" }}</td>
+    <td>{{ p.barcode_number }}</td>
+    <td>{{ p.price }}</td>
+    <td {% if p.is_low_stock %}class="low"{% endif %}>{{ p.quantity }}</td>
+  </tr>
+  {% empty %}<tr><td colspan="5">No products found.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

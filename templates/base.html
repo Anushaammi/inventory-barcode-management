@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inventory</title>
+  <style>
+    body{font-family:Arial,sans-serif;margin:0;background:#f5f5f4;color:#1f2937}
+    nav{background:#b45309;padding:12px 20px;display:flex;gap:16px;
+        align-items:center;flex-wrap:wrap}
+    nav a,nav button{color:#fff;text-decoration:none;background:none;
+        border:0;font-size:15px;cursor:pointer}
+    nav form{display:inline;margin-left:auto}
+    main{max-width:900px;margin:20px auto;padding:0 16px}
+    .card{background:#fff;padding:16px;border-radius:8px;margin-bottom:16px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+          gap:12px}
+    .stat b{font-size:26px;display:block;color:#b45309}
+    table{width:100%;border-collapse:collapse;background:#fff}
+    th,td{padding:8px;border-bottom:1px solid #e5e7eb;text-align:left}
+    .btn{background:#b45309;color:#fff;padding:8px 14px;border-radius:6px;
+         text-decoration:none;border:0;cursor:pointer;font-size:14px}
+    .low{color:#b91c1c;font-weight:bold}
+    .msg{padding:10px;border-radius:6px;margin-bottom:10px;background:#dcfce7}
+    .msg.error{background:#fee2e2}
+    input,select{padding:7px;margin:3px 0}
+    @media print{nav,.noprint{display:none}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="{% url 'dashboard' %}">Dashboard</a>
+  <a href="{% url 'product_list' %}">Products</a>
+  <a href="{% url 'scan' %}">Scan</a>
+  <a href="{% url 'low_stock' %}">Low stock</a>
+  <a href="{% url 'export_csv' %}">Export CSV</a>
+  {% if user.is_authenticated %}
+  <form method="post" action="{% url 'logout' %}">{% csrf_token %}
+    <button>Logout ({{ user.username }})</button></form>
+  {% endif %}
+</nav>
+<main>
+  {% for m in messages %}
+    <div class="msg {{ m.tags }}">{{ m }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

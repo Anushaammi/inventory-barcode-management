@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Low stock report</h2>
+<table>
+  <tr><th>Name</th><th>Barcode</th><th>Qty</th><th>Reorder level</th></tr>
+  {% for p in products %}
+  <tr><td><a href="{% url 'product_detail' p.pk %}">{{ p.name }}</a></td>
+      <td>{{ p.barcode_number }}</td>
+      <td class="low">{{ p.quantity }}</td><td>{{ p.reorder_level }}</td></tr>
+  {% empty %}<tr><td colspan="4">All products are well stocked.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

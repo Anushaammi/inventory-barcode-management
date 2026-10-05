@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Scan a barcode</h2>
+  <p>Click the box, then scan with your scanner (or type the number).</p>
+  <form method="get">
+    <input name="code" autofocus autocomplete="off"
+           placeholder="Barcode number" style="width:260px">
+    <button class="btn">Find</button>
+  </form>
+</div>
+{% endblock %}
